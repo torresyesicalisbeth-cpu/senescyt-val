@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta de Títulos Registrados - SENESCYT</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 0; color: #333; }
+        .top-nav { background-color: #1e1b4b; padding: 12px 20px; display: flex; gap: 20px; align-items: center; }
+        .top-nav a { color: #ffffff; text-decoration: none; font-size: 13px; font-weight: bold; text-transform: uppercase; }
+        .top-nav a:hover { text-decoration: underline; }
+        .main-container { max-width: 600px; margin: 20px auto; background: #ffffff; padding: 25px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        h1 { font-size: 22px; color: #1e1b4b; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 0; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 13px; font-weight: bold; color: #334155; margin-bottom: 6px; }
+        .form-control { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 14px; box-sizing: border-box; }
+        .captcha-box { background: #000; color: #fff; padding: 10px; width: 120px; text-align: center; font-family: monospace; font-size: 20px; font-weight: bold; letter-spacing: 3px; border-radius: 3px; margin-bottom: 8px; }
+        .btn-buscar { background-color: #4f46e5; color: white; border: none; padding: 10px 25px; font-size: 14px; font-weight: bold; border-radius: 3px; cursor: pointer; text-transform: uppercase; }
+        .btn-buscar:hover { background-color: #4338ca; }
+        .atencion-box { background-color: #fef9c3; border: 1px solid #fde047; padding: 12px 15px; border-radius: 4px; font-size: 12px; color: #713f12; margin-bottom: 12px; line-height: 1.4; }
+        .atencion-box strong { display: block; margin-bottom: 4px; color: #854d0e; }
+        #resultados { display: none; margin-top: 30px; }
+        .result-section { border: 1px solid #cbd5e1; border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
+        .result-header { background-color: #1e1b4b; color: white; padding: 10px 15px; font-size: 14px; font-weight: bold; }
+        .result-body { padding: 15px; background: #ffffff; font-size: 13px; }
+        .result-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
+        .result-label { font-weight: bold; color: #475569; width: 40%; }
+        .result-value { color: #1e293b; width: 60%; text-align: right; }
+        .footer { text-align: center; padding: 25px 15px; margin-top: 30px; border-top: 1px solid #e2e8f0; background: #ffffff; }
+        .footer img { max-width: 180px; height: auto; margin-bottom: 12px; }
+        .footer p { font-size: 11px; color: #64748b; line-height: 1.5; margin: 4px 0; }
+        .error-msg { color: #dc2626; font-weight: bold; text-align: center; padding: 15px; font-size: 13px; }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <a href="#">INICIO</a>
+        <a href="#">CONSULTA DE TÍTULOS</a>
+        <a href="#">ESTADO TÍTULOS EXTRANJEROS</a>
+    </div>
+
+    <div class="main-container">
+        <h1>CONSULTA DE TÍTULOS REGISTRADOS</h1>
+
+        <div class="atencion-box">
+            <strong>ATENCIÓN 1</strong>
+            Las instituciones de educación superior nacionales serán responsables del registro de los títulos que emitan, previa verificación del cumplimiento de los requisitos legales y académicos...
+        </div>
+        <div class="atencion-box">
+            <strong>ATENCIÓN 2</strong>
+            El reconocimiento/registro del título no habilita al ejercicio de las profesiones reguladas por leyes específicas...
+        </div>
+
+        <div class="form-group">
+            <label>Apellidos</label>
+            <input type="text" id="apellidosInput" class="form-control" placeholder="Apellidos">
+        </div>
+        <div class="form-group">
+            <label>Identificación (Cédula/Pasaporte/D.I. País de origen)</label>
+            <input type="text" id="cedulaInput" class="form-control" placeholder="Identificación">
+        </div>
+        <div class="form-group">
+            <label>*Ingrese los caracteres</label>
+            <div class="captcha-box">ipvn</div>
+            <input type="text" class="form-control" style="max-width: 150px;" placeholder="Ingrese texto">
+        </div>
+        <button type="button" class="btn-buscar" onclick="consultarSenescyt()">Buscar</button>
+
+        <div id="resultados">
+            <div id="cuerpoResultados"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <img src="logo-ecuador.jpeg" alt="El Nuevo Ecuador">
+        <p>Punto de Atención al Usuario: Whymper E7-37 y Alpallana, edificio Delfos, Quito</p>
+        <p>Edificio Matriz: Av. Amazonas N34-451 y Av. Atahualpa Quito - Ecuador</p>
+        <p>Teléfono: (593 2)-023961400</p>
+    </div>
+
+    <script>
+        const baseDatosSenescyt = {
+            "0201970142": {
+                apellidos: "MESTANZA NARANJO",
+                nombres: "JESSICA MARIA",
+                identificacion: "0201970142",
+                genero: "FEMENINO",
+                nacionalidad: "ECUADOR",
+                titulo: "INGENIERIA EN CONTABILIDAD Y AUDITORIA CPA",
+                institucion: "UNIVERSIDAD TECNICA DE AMBATO",
+                tipo: "Nacional",
+                numeroRegistro: "1010-12-1117514",
+                fechaRegistro: "2012-02-29",
+                areaConocimiento: "CIENCIAS SOCIALES, EDUCACION COMERCIAL Y DERECHO"
+            }
+        };
+
+        function consultarSenescyt() {
+            let cedula = document.getElementById('cedulaInput').value.trim();
+            let contenedor = document.getElementById('resultados');
+            let cuerpo = document.getElementById('cuerpoResultados');
+
+            if (!cedula) {
+                alert("Por favor ingrese el número de identificación.");
+                return;
+            }
+
+            let persona = baseDatosSenescyt[cedula];
+
+            if (persona) {
+                cuerpo.innerHTML = `
+                    <div class="result-section">
+                        <div class="result-header">Información Personal</div>
+                        <div class="result-body">
+                            <div class="result-row"><span class="result-label">Identificación:</span><span class="result-value">${persona.identificacion}</span></div>
+                            <div class="result-row"><span class="result-label">Nombres:</span><span class="result-value">${persona.apellidos} ${persona.nombres}</span></div>
+                            <div class="result-row"><span class="result-label">Género:</span><span class="result-value">${persona.genero}</span></div>
+                            <div class="result-row"><span class="result-label">Nacionalidad:</span><span class="result-value">${persona.nacionalidad}</span></div>
+                        </div>
+                    </div>
+
+                    <div class="result-section">
+                        <div class="result-header">Título(s) de tercer nivel de grado</div>
+                        <div class="result-body">
+                            <div class="result-row"><span class="result-label">Título:</span><span class="result-value">${persona.titulo}</span></div>
+                            <div class="result-row"><span class="result-label">IES:</span><span class="result-value">${persona.institucion}</span></div>
+                            <div class="result-row"><span class="result-label">Tipo:</span><span class="result-value">${persona.tipo}</span></div>
+                            <div class="result-row"><span class="result-label">Número de Registro:</span><span class="result-value">${persona.numeroRegistro}</span></div>
+                            <div class="result-row"><span class="result-label">Fecha de Registro:</span><span class="result-value">${persona.fechaRegistro}</span></div>
+                            <div class="result-row"><span class="result-label">Área de Conocimiento:</span><span class="result-value">${persona.areaConocimiento}</span></div>
+                        </div>
+                    </div>
+                `;
+                contenedor.style.display = "block";
+            } else {
+                cuerpo.innerHTML = `<div class="error-msg">No se encuentran registros con el número de identificación ingresado.</div>`;
+                contenedor.style.display = "block";
+            }
+        }
+    </script>
+</body>
+</html>
