@@ -5,84 +5,348 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Consulta de Títulos Registrados - SENESCYT</title>
     <style>
-        body { font-family: Arial, sans-serif; background-color: #f1f5f9; margin: 0; padding: 0; color: #333; }
-        .top-nav { background-color: #1e1b4b; padding: 12px 20px; display: flex; gap: 20px; align-items: center; }
-        .top-nav a { color: #ffffff; text-decoration: none; font-size: 13px; font-weight: bold; text-transform: uppercase; }
-        .top-nav a:hover { text-decoration: underline; }
-        .main-container { max-width: 650px; margin: 20px auto; background: #ffffff; padding: 25px; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        h1 { font-size: 20px; color: #1e1b4b; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; margin-top: 0; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 13px; font-weight: bold; color: #334155; margin-bottom: 6px; }
-        .form-control { width: 100%; padding: 10px; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 14px; box-sizing: border-box; }
-        .captcha-box { background: #000; color: #fff; padding: 10px; width: 120px; text-align: center; font-family: monospace; font-size: 20px; font-weight: bold; letter-spacing: 3px; border-radius: 3px; margin-bottom: 8px; }
-        .btn-buscar { background-color: #4f46e5; color: white; border: none; padding: 10px 25px; font-size: 14px; font-weight: bold; border-radius: 3px; cursor: pointer; text-transform: uppercase; }
-        .btn-buscar:hover { background-color: #4338ca; }
-        .atencion-box { background-color: #fefce8; border: 1px solid #fef08a; padding: 12px 15px; border-radius: 4px; font-size: 11px; color: #713f12; margin-bottom: 10px; line-height: 1.4; }
-        .atencion-box strong { display: block; margin-bottom: 4px; color: #854d0e; font-size: 12px; }
-        #resultados { display: none; margin-top: 25px; }
-        .result-section { border: 1px solid #cbd5e1; border-radius: 4px; margin-bottom: 20px; overflow: hidden; }
-        .result-header { background-color: #1e1b4b; color: white; padding: 10px 15px; font-size: 14px; font-weight: bold; }
-        .result-body { padding: 15px; background: #ffffff; font-size: 13px; }
-        .result-row { display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f1f5f9; }
-        .result-label { font-weight: bold; color: #475569; width: 40%; }
-        .result-value { color: #1e293b; width: 60%; text-align: right; }
-        .footer { text-align: center; padding: 25px 15px; margin-top: 30px; border-top: 1px solid #e2e8f0; background: #ffffff; }
-        .footer img { max-width: 180px; height: auto; margin-bottom: 12px; }
-        .footer p { font-size: 11px; color: #64748b; line-height: 1.5; margin: 4px 0; }
-        .error-msg { color: #dc2626; font-weight: bold; text-align: center; padding: 15px; font-size: 13px; }
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #c5c7dc;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        .institutional-header {
+            background-color: #2b235a;
+            color: #ffffff;
+            padding: 14px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .inst-left {
+            font-size: 13px;
+            font-weight: bold;
+            line-height: 1.3;
+        }
+        .inst-right {
+            font-size: 16px;
+            font-weight: 900;
+            font-style: italic;
+            letter-spacing: 0.5px;
+        }
+        .inst-right span.sub {
+            display: block;
+            font-size: 9px;
+            font-style: normal;
+            font-weight: normal;
+            text-align: right;
+            margin-bottom: -2px;
+        }
+        .page-wrapper {
+            max-width: 960px;
+            margin: 35px auto;
+            background: #ffffff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+        }
+        .top-nav {
+            background-color: #2b235a;
+            padding: 11px 25px;
+            display: flex;
+            gap: 22px;
+            align-items: center;
+        }
+        .top-nav a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .top-nav a:hover {
+            text-decoration: underline;
+        }
+        .main-container {
+            padding: 25px 30px;
+        }
+        h1 {
+            font-size: 20px;
+            color: #333333;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 12px;
+            margin-top: 0;
+            margin-bottom: 22px;
+            font-weight: normal;
+        }
+        .two-columns {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start;
+        }
+        .col-left {
+            flex: 1;
+        }
+        .col-right {
+            flex: 1.1;
+        }
+        @media (max-width: 720px) {
+            .two-columns {
+                flex-direction: column;
+            }
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: bold;
+            color: #334155;
+            margin-bottom: 5px;
+        }
+        .form-control {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 3px;
+            font-size: 13px;
+            box-sizing: border-box;
+        }
+        .captcha-row {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .captcha-box {
+            background: #000000;
+            color: #ffffff;
+            padding: 8px 14px;
+            min-width: 110px;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 22px;
+            font-weight: bold;
+            letter-spacing: 3px;
+            border-radius: 2px;
+        }
+        .btn-buscar {
+            background-color: #7c74a4;
+            color: white;
+            border: none;
+            padding: 9px 20px;
+            font-size: 13px;
+            font-weight: bold;
+            border-radius: 3px;
+            cursor: pointer;
+            width: 138px;
+        }
+        .btn-buscar:hover {
+            background-color: #2b235a;
+        }
+        .atencion-box {
+            background-color: #fefce8;
+            border: 1px solid #d4d4aa;
+            padding: 11px 14px;
+            border-radius: 2px;
+            font-size: 11px;
+            color: #3f3f36;
+            margin-bottom: 12px;
+            line-height: 1.45;
+        }
+        .atencion-box strong {
+            display: block;
+            margin-bottom: 4px;
+            color: #333333;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+        .atencion-box small {
+            display: block;
+            margin-top: 5px;
+            color: #555555;
+            font-size: 10px;
+        }
+        
+        #resultados {
+            display: none;
+            margin-top: 28px;
+        }
+        .result-section {
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .result-header {
+            background-color: #2b235a;
+            color: white;
+            padding: 10px 15px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .result-body {
+            padding: 15px;
+            background: #ffffff;
+            font-size: 13px;
+        }
+        .result-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .result-label {
+            font-weight: bold;
+            color: #475569;
+            width: 40%;
+        }
+        .result-value {
+            color: #1e293b;
+            width: 60%;
+            text-align: right;
+        }
+        .btn-imprimir {
+            background-color: #2b235a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 12px;
+            font-weight: bold;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+        .btn-imprimir:hover {
+            background-color: #3e337d;
+        }
+
+        table.cert-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 12px;
+        }
+        table.cert-table th, table.cert-table td {
+            border: 1px solid #cbd5e1;
+            padding: 8px;
+            text-align: left;
+        }
+        table.cert-table th {
+            background-color: #f8fafc;
+            color: #334155;
+        }
+
+        .footer {
+            padding: 20px 30px;
+            border-top: 1px solid #e2e8f0;
+            background: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        .footer img {
+            max-width: 170px;
+            height: auto;
+        }
+        .footer-info {
+            text-align: center;
+            flex: 1;
+        }
+        .footer-info p {
+            font-size: 11px;
+            color: #475569;
+            line-height: 1.5;
+            margin: 2px 0;
+        }
+        .tricolor-bar {
+            height: 6px;
+            width: 100%;
+            background: linear-gradient(to right, #ffdd00 0%, #ffdd00 50%, #034ea2 50%, #034ea2 75%, #ed1c24 75%, #ed1c24 100%);
+        }
+        .error-msg {
+            color: #dc2626;
+            font-weight: bold;
+            text-align: center;
+            padding: 15px;
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
 
-    <div class="top-nav">
-        <a href="#">INICIO</a>
-        <a href="#">CONSULTA DE TÍTULOS</a>
-        <a href="#">ESTADO TÍTULOS EXTRANJEROS</a>
-    </div>
-
-    <div class="main-container">
-        <h1>CONSULTA DE TÍTULOS REGISTRADOS</h1>
-
-        <div class="atencion-box">
-            <strong>ATENCIÓN 1</strong>
-            Las instituciones de educación superior nacionales serán responsables del registro de los títulos que emitan, previa verificación del cumplimiento de los requisitos legales y académicos. La información registrada será parte del Sistema Nacional de Información de la Educación Superior y este será el único medio oficial a través del cual se verificará el reconocimiento y validez del título en el Ecuador.
+    <div class="institutional-header">
+        <div class="inst-left">
+            Ministerio de Educación,<br>Deporte y Cultura
         </div>
-        
-        <div class="atencion-box">
-            <strong>ATENCIÓN 2</strong>
-            El reconocimiento/registro del título no habilita al ejercicio de las profesiones reguladas por leyes específicas, y de manera especial en el ejercicio de las carreras que pongan en riesgo de modo directo la vida, salud y seguridad ciudadana conforme el artículo 104 de la Ley Orgánica de Educación Superior.
-        </div>
-
-        <div class="atencion-box">
-            <strong>ATENCIÓN 3</strong>
-            La información que se visualiza en el área o campo de conocimiento, fue reportada por las instituciones de educación superior al momento de crear la carrera o programa, con base en la autonomía responsable, de conformidad con lo que establece la Ley Orgánica de Educación Superior en el Art. 17.
-        </div>
-
-        <div class="form-group">
-            <label>Apellidos</label>
-            <input type="text" id="apellidosInput" class="form-control" placeholder="Apellidos">
-        </div>
-        <div class="form-group">
-            <label>Identificación (Cédula/Pasaporte/D.I. País de origen)</label>
-            <input type="text" id="cedulaInput" class="form-control" placeholder="Identificación">
-        </div>
-        <div class="form-group">
-            <label>*Ingrese los caracteres</label>
-            <div class="captcha-box">ipvn</div>
-            <input type="text" class="form-control" style="max-width: 150px;" placeholder="Ingrese texto">
-        </div>
-        <button type="button" class="btn-buscar" onclick="consultarSenescyt()">Buscar</button>
-
-        <div id="resultados">
-            <div id="cuerpoResultados"></div>
+        <div class="inst-right">
+            <span class="sub">EL NUEVO</span>
+            ECUADOR
         </div>
     </div>
 
-    <div class="footer">
-        <img src="logo-ecuador.jpeg" alt="El Nuevo Ecuador">
-        <p>Punto de Atención al Usuario: Whymper E7-37 y Alpallana, edificio Delfos, Quito</p>
-        <p>Edificio Matriz: Av. Amazonas N34-451 y Av. Atahualpa Quito - Ecuador</p>
-        <p>Teléfono: (593 2)-023961400</p>
+    <div class="page-wrapper">
+        <div class="top-nav">
+            <a href="#">INICIO</a>
+            <a href="#">CONSULTA DE TÍTULOS</a>
+            <a href="#">ESTADO TÍTULOS EXTRANJEROS</a>
+        </div>
+
+        <div class="main-container">
+            <h1>CONSULTA DE TÍTULOS REGISTRADOS</h1>
+
+            <div class="two-columns">
+                <div class="col-left">
+                    <div class="form-group">
+                        <label>Apellidos</label>
+                        <input type="text" id="apellidosInput" class="form-control" placeholder="Apellidos">
+                    </div>
+                    <div class="form-group">
+                        <label>Identificación (Cédula/Pasaporte/D.I. País de origen)</label>
+                        <input type="text" id="cedulaInput" class="form-control" placeholder="Identificación(Cédula/Pasaporte/D.I. País de origen)">
+                    </div>
+                    <div class="form-group">
+                        <label>*Ingrese los caracteres</label>
+                        <div class="captcha-row">
+                            <div class="captcha-box">ipvn</div>
+                            <input type="text" class="form-control" placeholder="">
+                        </div>
+                        <button type="button" class="btn-buscar" onclick="consultarSenescyt()">Buscar</button>
+                    </div>
+                </div>
+
+                <div class="col-right">
+                    <div class="atencion-box">
+                        <strong>ATENCIÓN 1</strong>
+                        Las instituciones de educación superior nacionales serán responsables del registro de los títulos que emitan, previa verificación del cumplimiento de los requisitos legales y académicos. La información registrada será parte del sistema nacional de información de la educación superior y este será el único medio oficial a través del cual se verificará el reconocimiento y validez del título en el Ecuador.
+                        <small>(Reglamento General a la Ley Orgánica de Educación Superior, Art. 22)</small>
+                    </div>
+                    
+                    <div class="atencion-box">
+                        <strong>ATENCIÓN 2</strong>
+                        El reconocimiento/registro del título no habilita al ejercicio de las profesiones reguladas por leyes específicas, y de manera especial al ejercicio de las carreras que pongan en riesgo de modo directo la vida, salud y seguridad ciudadana conforme el artículo 104 de la Ley Orgánica de Educación Superior.
+                        <small>(Resolución RPC-SO-10-No.206-2016)</small>
+                    </div>
+
+                    <div class="atencion-box">
+                        <strong>ATENCIÓN 3</strong>
+                        La información que se visualiza en el área o campo de conocimiento, fue reportada por las instituciones de educación superior al momento de crear la carrera o programa, con base en la autonomía responsable, de conformidad con lo que establece la Ley Orgánica de Educación Superior en el Art. 17.
+                    </div>
+                </div>
+            </div>
+
+            <div id="resultados">
+                <div id="cuerpoResultados"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <img src="logo-ecuador.jpeg" alt="El Nuevo Ecuador">
+            <div class="footer-info">
+                <p>Punto de Atención al Usuario: Whymper E7-37 y Alpallana, edificio Delfos, Quito</p>
+                <p>Edificio Matriz: Av. Amazonas N34-451 y Av. Atahualpa Quito - Ecuador. Código Postal: 170507. Quito - Ecuador</p>
+                <p>Teléfono: (593 2)-023961400</p>
+            </div>
+        </div>
+        <div class="tricolor-bar"></div>
     </div>
 
     <script>
@@ -98,7 +362,8 @@
                 tipo: "Nacional",
                 numeroRegistro: "1002-2026-XXXXXXX",
                 fechaRegistro: "2026-03-15",
-                areaConocimiento: "CIENCIAS SOCIALES, EDUCACION Y HUMANIDADES"
+                areaConocimiento: "CIENCIAS SOCIALES, EDUCACION Y HUMANIDADES",
+                observacion: "REGISTRADO"
             }
         };
 
@@ -123,6 +388,7 @@
                             <div class="result-row"><span class="result-label">Nombres:</span><span class="result-value">${persona.apellidos} ${persona.nombres}</span></div>
                             <div class="result-row"><span class="result-label">Género:</span><span class="result-value">${persona.genero}</span></div>
                             <div class="result-row"><span class="result-label">Nacionalidad:</span><span class="result-value">${persona.nacionalidad}</span></div>
+                            <button class="btn-imprimir" onclick="window.print()">Imprimir Información</button>
                         </div>
                     </div>
 
@@ -130,11 +396,29 @@
                         <div class="result-header">Título(s) de tercer nivel de grado</div>
                         <div class="result-body">
                             <div class="result-row"><span class="result-label">Título:</span><span class="result-value">${persona.titulo}</span></div>
-                            <div class="result-row"><span class="result-label">IES:</span><span class="result-value">${persona.institucion}</span></div>
+                            <div class="result-row"><span class="result-label">Institución de Educación Superior:</span><span class="result-value">${persona.institucion}</span></div>
                             <div class="result-row"><span class="result-label">Tipo:</span><span class="result-value">${persona.tipo}</span></div>
+                            <div class="result-row"><span class="result-label">Reconocido Por:</span><span class="result-value"></span></div>
                             <div class="result-row"><span class="result-label">Número de Registro:</span><span class="result-value">${persona.numeroRegistro}</span></div>
                             <div class="result-row"><span class="result-label">Fecha de Registro:</span><span class="result-value">${persona.fechaRegistro}</span></div>
-                            <div class="result-row"><span class="result-label">Área de Conocimiento:</span><span class="result-value">${persona.areaConocimiento}</span></div>
+                            <div class="result-row"><span class="result-label">Área o Campo de Conocimiento:</span><span class="result-value">${persona.areaConocimiento}</span></div>
+                            <div class="result-row"><span class="result-label">Observación:</span><span class="result-value">${persona.observacion}</span></div>
+                        </div>
+                    </div>
+
+                    <div class="result-section">
+                        <div class="result-header">Certificaciones del Sistema Nacional de Cualificaciones y Capacitación Profesional</div>
+                        <div class="result-body">
+                            <table class="cert-table">
+                                <tr>
+                                    <th>Nombres:</th>
+                                    <td>${persona.apellidos} ${persona.nombres}</td>
+                                </tr>
+                                <tr>
+                                    <th>Identificación:</th>
+                                    <td>${persona.identificacion}</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                 `;
