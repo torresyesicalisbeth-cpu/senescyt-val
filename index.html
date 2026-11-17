@@ -25,20 +25,34 @@
             font-weight: bold;
             line-height: 1.3;
         }
+        .inst-right-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
         .inst-right {
             font-size: 16px;
             font-weight: 900;
             font-style: italic;
             letter-spacing: 0.5px;
+            text-align: right;
         }
         .inst-right span.sub {
             display: block;
             font-size: 9px;
             font-style: normal;
             font-weight: normal;
-            text-align: right;
             margin-bottom: -2px;
         }
+        .header-tricolor {
+            display: flex;
+            gap: 3px;
+            height: 24px;
+        }
+        .bar-y { width: 4px; background-color: #ffdd00; }
+        .bar-a { width: 4px; background-color: #034ea2; }
+        .bar-r { width: 4px; background-color: #ed1c24; transform: skewX(-15deg); }
+
         .page-wrapper {
             max-width: 960px;
             margin: 35px auto;
@@ -277,9 +291,16 @@
         <div class="inst-left">
             Ministerio de Educación,<br>Deporte y Cultura
         </div>
-        <div class="inst-right">
-            <span class="sub">EL NUEVO</span>
-            ECUADOR
+        <div class="inst-right-container">
+            <div class="inst-right">
+                <span class="sub">EL NUEVO</span>
+                ECUADOR
+            </div>
+            <div class="header-tricolor">
+                <div class="bar-y"></div>
+                <div class="bar-a"></div>
+                <div class="bar-r"></div>
+            </div>
         </div>
     </div>
 
@@ -358,10 +379,10 @@
                 genero: "FEMENINO",
                 nacionalidad: "ECUADOR",
                 titulo: "LICENCIADA EN CIENCIAS DE LA EDUCACION INICIAL",
-                institucion: "UNIVERSIDAD DE GUAYAQUIL",
+                institucion: "UNIVERSIDAD DE ESPECIALIDADES ESPÍRITU SANTO",
                 tipo: "Nacional",
-                numeroRegistro: "1002-2026-XXXXXXX",
-                fechaRegistro: "2026-03-15",
+                numeroRegistro: "UEES-FALE-2026-0418",
+                fechaRegistro: "2026-09-08",
                 areaConocimiento: "CIENCIAS SOCIALES, EDUCACION Y HUMANIDADES",
                 observacion: "REGISTRADO"
             }
